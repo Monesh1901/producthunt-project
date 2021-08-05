@@ -2,6 +2,47 @@
 
 {% block content %}
 
-hey this is superman moni
+{% for product in products.all %}
+
+
+
+<style>
+.btn {
+  border: 2px solid blue;
+  background-color: white;
+  color: blue;
+  padding: 14px 28px;
+  font-size: 16px;
+  cursor: pointer;
+
+  .info {
+  border-color: #2196F3;
+  color: dodgerblue
+}
+
+.info:hover {
+  background: #2196F3;
+  color: white;
+}
+}
+</style>
+<div class="row pt-3">
+  <div class="col-2" onclick="window.location='{% url 'detail' product.id %}';" style="cursor: pointer;">
+    <img src="{{ product.icon.url }}" class="img-fluid" />
+  </div>
+  <div class="col-6" onclick="window.location='{% url 'detail' product.id %}';" style="cursor: pointer;">
+    <h1>{{ product.title }}</h1>
+    <p>{{ product.summary }}</p>
+  </div>
+  <div class="col-4">
+    <a href="javascript:{document.getElementById('upvote{{ product.id }}').submit()}"><button class="btn info">Vote here ({{product.votes_total}}) </button></a>
+  </div>
+</div>
+
+<form id="upvote{{ product.id }}" method="POST" action="{% url 'upvote' product.id %}">
+  {% csrf_token%}
+  <input type="hidden">
+</form>
+{% endfor %}
 
 {% endblock %}
